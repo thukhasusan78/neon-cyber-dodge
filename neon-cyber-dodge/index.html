@@ -519,6 +519,18 @@
         function update() {
             frameCount++;
 
+            // Auto-fire laser automatically every 10 frames
+            if (frameCount % 10 === 0) {
+                if (ammo <= 0) ammo = 5; // Auto recharge ammo
+                fireLaser();
+            }
+
+            // Passive ammo recharge
+            if (frameCount % 60 === 0 && ammo < 20) {
+                ammo++;
+                if (typeof ammoCountEl !== 'undefined') ammoCountEl.innerText = ammo;
+            }
+
             if (shieldTime > 0) {
                 shieldTime--;
                 if (shieldTime === 0) shieldBadge.classList.add('hidden');
