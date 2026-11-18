@@ -102,29 +102,7 @@
             transition: width 0.1s linear;
         }
 
-        .controls-overlay {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            pointer-events: auto;
-        }
-        .fire-btn {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ff007f, #7928ca);
-            border: 2px solid #ff00ff;
-            color: #fff;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.7);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            touch-action: manipulation;
-        }
+        .controls-overlay { display: none; }
         .fire-btn:active { transform: scale(0.92); }
         .overlay {
             position: absolute;
