@@ -368,14 +368,12 @@
         let nextBossScore = 400;
 
         function fireLaser() {
-            if (!isRunning || ammo <= 0) return;
-            ammo--;
-            ammoCountEl.innerText = ammo;
+            if (!isRunning) return;
             playSound('laser');
             lasers.push({
                 x: player.x,
                 y: player.y - player.radius,
-                vy: -12,
+                vy: -14,
                 radius: 4,
                 color: '#ff00ff'
             });
