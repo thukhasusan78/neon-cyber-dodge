@@ -102,29 +102,7 @@
             transition: width 0.1s linear;
         }
 
-        .controls-overlay {
-            position: absolute;
-            bottom: 15px;
-            right: 15px;
-            pointer-events: auto;
-        }
-        .fire-btn {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background: radial-gradient(circle, #ff007f, #7928ca);
-            border: 2px solid #ff00ff;
-            color: #fff;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 0 20px rgba(255, 0, 127, 0.7);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-            touch-action: manipulation;
-        }
+        .controls-overlay { display: none; }
         .fire-btn:active { transform: scale(0.92); }
         .overlay {
             position: absolute;
@@ -227,9 +205,7 @@
             <div id="boss-announcement" class="announcement hidden">⚠️ BOSS INCOMING ⚠️</div>
             <div id="wave-announcement" class="announcement hidden" style="color: #00f3ff; text-shadow: 0 0 20px #00f3ff;">WAVE 2 START!</div>
 
-            <div class="controls-overlay">
-                <button class="fire-btn" id="fire-btn" onclick="fireLaser()">🔥<br>FIRE</button>
-            </div>
+
         </div>
 
         <div id="start-screen" class="overlay">
@@ -242,7 +218,7 @@
                 <span class="tag">🛡️ Shield Orbs</span>
                 <span class="tag">⚡ Ammo Drops</span>
             </div>
-            <p style="font-size: 12px;">Controls: Arrow Keys / WASD / Touch to move.<br>Spacebar or FIRE button to Shoot Lasers!</p>
+            <p style="font-size: 12px;">Controls: Arrow Keys / WASD / Touch to move.<br>Lasers auto-fire continuously! Dodge obstacles & beat bosses!</p>
             <button class="btn" onclick="startGame()">START GAME</button>
         </div>
 
@@ -390,14 +366,12 @@
         let nextBossScore = 400;
 
         function fireLaser() {
-            if (!isRunning || ammo <= 0) return;
-            ammo--;
-            ammoCountEl.innerText = ammo;
+            if (!isRunning) return;
             playSound('laser');
             lasers.push({
                 x: player.x,
                 y: player.y - player.radius,
-                vy: -12,
+                vy: -14,
                 radius: 4,
                 color: '#ff00ff'
             });
@@ -518,6 +492,18 @@
 
         function update() {
             frameCount++;
+
+            // Auto-fire laser automatically every 10 frames
+            if (frameCount % 10 === 0) {
+                if (ammo <= 0) ammo = 5; // Auto recharge ammo
+                fireLaser();
+            }
+
+            // Passive ammo recharge
+            if (frameCount % 60 === 0 && ammo < 20) {
+                ammo++;
+                if (typeof ammoCountEl !== 'undefined') ammoCountEl.innerText = ammo;
+            }
 
             if (shieldTime > 0) {
                 shieldTime--;
